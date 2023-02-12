@@ -9,6 +9,10 @@
 (setq user-full-name "John Doe"
       user-mail-address "john@doe.com")
 
+(setq doom-font (font-spec :family "Source Code Pro" :size 16))
+  (setq doom-font "Terminus (TTF):pixelsize=14:antialias=off")
+  (setq doom-font "Source Code Pro-16")
+
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
 ;; - `doom-font' -- the primary font to use
