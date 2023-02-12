@@ -9,8 +9,12 @@
 (setq user-full-name "John Doe"
       user-mail-address "john@doe.com")
 
+
+;; (setq doom-font (font-spec :family "Source Code Pro" :size 14 :weight 'semi-light)
+;;      doom-variable-pitch-font (font-spec :family "" :size 15))
+
 (setq doom-font (font-spec :family "Source Code Pro" :size 14))
-  (setq doom-font "Terminus (TTF):pixelsize=14:antialias=off")
+ (setq doom-font "Terminus (TTF):pixelsize=14:antialias=off")
   (setq doom-font "Source Code Pro-14")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
@@ -78,11 +82,6 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-;;
-;;
-;;
-;l;
-;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;custourm;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;(define-key global-map (kbd "<S-down-mouse-1>") 'ignore) ; turn off font dialog
