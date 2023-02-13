@@ -4,6 +4,7 @@
 *** 撤销 C-/
 *** h j k l
 *** w: word Forward; b: backward; e: word end;
+*** g-f: find-file-at-point; g-d: search symbol at point in project
 *** *-->n M-n ; N: M-p
 *** 使用~键对单个字符进行大小写转换
 *** %主要用于在编程中方便地在匹配的括号（包括{}，()）或是成对的标签之间跳转
