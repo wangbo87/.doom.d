@@ -67,5 +67,17 @@
 ;;   :recipe (:type git :repo "https://codeberg.org/akib/emacs-corfu-doc-terminal.git"))
 (package! color-rg
   :recipe (:host github :repo "manateelazycat/color-rg"))
+
+(package! helm-swoop 
+  :recipe (:host github :repo "emacsorphanage/helm-swoop"))
+
+(package! verilog-mode
+  :recipe (:host github :repo "veripool/verilog-mode"))
+
+;;(package! builtin-package :pin "1a2b3c4d5e")
+;;veripool.org/verilog-mode
+;;21e4ecd
+;;commit 5fe663d
+
 ;;(package! awesome-tab
 ;;  :recipe (:host github :repo "manateelazycat/awesome-tab"))

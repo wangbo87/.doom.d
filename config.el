@@ -3,7 +3,10 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-
+(add-to-list 'exec-path "/usr/local/git/bin")
+(add-to-list 'exec-path "/home/ICer/.nix-profile/bin")
+(add-to-list 'exec-path "/etc/profiles/per-user/chris/bin")
+(add-to-list 'exec-path "/run/current-system/sw/bin")
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
 (setq user-full-name "John Doe"
@@ -93,10 +96,21 @@
 ;;(map! :g "<S-mouse-1>" #'mouse-set-point)
 ;;(put 'mouse-set-point 'CUA 'move)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;color-rg;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(modify-coding-system-alist 'process "rg" '(utf-8 . chinese-gbk-dos))
+(custom-set-variables '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case"))
 (require 'color-rg)
 (global-set-key [f2] 'color-rg-search-symbol-in-project)
+(global-set-key (kbd "<f3>") 'helm-swoop)
+;; If there is no symbol at the cursor, use the last used words instead.
+(setq helm-swoop-pre-input-function
+      (lambda ()
+        (let (($pre-input (thing-at-point 'symbol)))
+          (if (eq (length $pre-input) 0)
+              helm-swoop-pattern ;; this variable keeps the last used words
+            $pre-input))))
 
 
+;(global-set-key [f3] 'color-rg-search-symbol-in-project)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;awesome-tab;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;(use-package awesome-tab
 ;;  :load-path "~/.emacs.d/elpa/awesome-tab"
@@ -104,3 +118,14 @@
 ;;  (awesome-tab-mode t))
 ;; sort-tab
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;corfu;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;verilog;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+(require 'verilog-mode)
+
+(setq verilog-tool "vlogan")
+(setq verilog-linter "vlogan")
+(setq verilog-coverage "vlogan")
+(setq verilog-simulator "verdi")
+(setq verilog-compiler "vlogan" )
