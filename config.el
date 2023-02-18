@@ -9,8 +9,8 @@
 ;;(add-to-list 'exec-path "/run/current-system/sw/bin")
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-(setq user-full-name "John Doe"
-      user-mail-address "john@doe.com")
+(setq user-full-name "wangbo87"
+      user-mail-address "xunledelang@163.com")
 
 
 ;; (setq doom-font (font-spec :family "Source Code Pro" :size 14 :weight 'semi-light)
@@ -98,10 +98,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;color-rg;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;(modify-coding-system-alist 'process "rg" '(utf-8 . chinese-gbk-dos))
 ;;(custom-set-variables '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case"))
+(map! :g "C-s" #'save-buffer)
+(global-set-key [f3] '+vertico/search-symbol-at-point)
 (require 'color-rg)
 (global-set-key [f2] 'color-rg-search-symbol-in-project)
-(global-set-key (kbd "<f3>") 'consult-line)
-(global-set-key (kbd "C-f") 'consult-line)
 
 ;; If there is no symbol at the cursor, use the last used words instead.
 (setq helm-swoop-pre-input-function
@@ -111,91 +111,6 @@
               helm-swoop-pattern ;; this variable keeps the last used words
             $pre-input))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun enable-minibuffer-auto-search-at-point()
-  ;; 参考https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-ivy.el
-  ;; @see https://www.reddit.com/r/emacs/comments/b7g1px/withemacs_execute_commands_like_marty_mcfly/
-  ;; 还有个更简单的https://emacs-china.org/t/xxx-thing-at-point/18047，但是不太注意细节
-  (defvar my-ivy-fly-commands
-    '(query-replace-regexp
-      flush-lines keep-lines ivy-read
-      swiper swiper-backward swiper-all
-      swiper-isearch swiper-isearch-backward
-      lsp-ivy-workspace-symbol lsp-ivy-global-workspace-symbol
-      my-project-search ;; call-interactively 'counsel-rg的函数需要加进来
-      consult-line consult-ripgrep
-      my-consult-ripgrep my-consult-ripgrep-only-current-dir my-consult-ripgrep-or-line
-      ))
-
-  (defvar my-ivy-fly-back-commands
-    '(self-insert-command
-      ivy-forward-char ivy-delete-char delete-forward-char kill-word kill-sexp
-      end-of-line mwim-end-of-line mwim-end-of-code-or-line mwim-end-of-line-or-code
-      yank ivy-yank-word ivy-yank-char ivy-yank-symbol counsel-yank-pop))
-
-  (defvar-local my-ivy-fly--travel nil)
-  (defun my-ivy-fly-back-to-present ()
-    (cond ((and (memq last-command my-ivy-fly-commands)
-                (equal (this-command-keys-vector) (kbd "M-p")))
-           ;; repeat one time to get straight to the first history item
-           (setq unread-command-events
-                 (append unread-command-events
-                         (listify-key-sequence (kbd "M-p")))))
-          ((or (memq this-command my-ivy-fly-back-commands)
-               (equal (this-command-keys-vector) (kbd "M-n")))
-           (unless my-ivy-fly--travel
-             (delete-region (point) (point-max))
-             (when (memq this-command '(ivy-forward-char
-                                        ivy-delete-char delete-forward-char
-                                        kill-word kill-sexp
-                                        end-of-line mwim-end-of-line
-                                        mwim-end-of-code-or-line
-                                        mwim-end-of-line-or-code))
-               ;; 如果是C-e之类，会重新插入搜索内容，但不再是灰的啦
-               (when (functionp 'ivy-cleanup-string)
-                 (insert (ivy-cleanup-string ivy-text)))
-               (when (featurep 'vertico)
-                 (insert (substring-no-properties (or (car-safe vertico--input) ""))))
-               (when (memq this-command '(ivy-delete-char
-                                          delete-forward-char
-                                          kill-word kill-sexp))
-                 (beginning-of-line)))
-             (setq my-ivy-fly--travel t)))))
-
-  (defvar disable-for-vertico-repeat nil)
-  (defun my-ivy-fly-time-travel ()
-    (unless disable-for-vertico-repeat
-      (when (memq this-command my-ivy-fly-commands)
-        (insert (propertize
-                 (save-excursion
-		   (set-buffer (window-buffer (minibuffer-selected-window)))
-                   ;; 参考https://emacs-china.org/t/xxx-thing-at-point/18047，可以搜索region
-		   (or (seq-some (lambda (thing) (thing-at-point thing t))
-				 '(region symbol)) ;; url sexp
-		       "")
-                   )
-                 'face 'shadow))
-i        (add-hook 'pre-command-hook 'my-ivy-fly-back-to-present nil t)
-        (beginning-of-line)))
-    )
-
-  (add-hook 'minibuffer-setup-hook #'my-ivy-fly-time-travel)
-  (add-hook 'minibuffer-exit-hook
-            (lambda ()
-              (remove-hook 'pre-command-hook 'my-ivy-fly-back-to-present t))))
-
-(enable-minibuffer-auto-search-at-point) ;; consult有个:initial也可以设置，不过搜索其它的话要先删除
-
-;(global-set-key [f3] 'color-rg-search-symbol-in-project)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;awesome-tab;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;(use-package awesome-tab
-;;  :load-path "~/.emacs.d/elpa/awesome-tab"
-;;  :config
-;;  (awesome-tab-mode t))
-;; sort-tab
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;corfu;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;verilog;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 (require 'verilog-mode)
