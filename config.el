@@ -3,23 +3,19 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-;;(add-to-list 'exec-path "/usr/local/git/bin")
-;;(add-to-list 'exec-path "/home/ICer/.nix-profile/bin")
-;;(add-to-list 'exec-path "/etc/profiles/per-user/chris/bin")
-;;(add-to-list 'exec-path "/run/current-system/sw/bin")
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
 (setq user-full-name "wangbo87"
       user-mail-address "xunledelang@163.com")
 
 
-;; (setq doom-font (font-spec :family "Source Code Pro" :size 14 :weight 'semi-light)
-;;      doom-variable-pitch-font (font-spec :family "" :size 15))
-
 (setq doom-font (font-spec :family "Source Code Pro" :size 14))
  (setq doom-font "Terminus (TTF):pixelsize=14:antialias=off")
   (setq doom-font "Source Code Pro-14")
-
+;; (setq doom-unicode-font (font-spec :family "symbola" :size 20))
+;; (setq doom-unicode-font (font-spec :family "DejaVu Sans" :size 15))
+;; (setq doom-unicode-font (font-spec :family "quivira" :size 20))
+(setq doom-unicode-font (font-spec :family "KaiTi" :size 14.0))
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
 ;; - `doom-font' -- the primary font to use
@@ -31,9 +27,6 @@
 ;;
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
-;;
-;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
-;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
