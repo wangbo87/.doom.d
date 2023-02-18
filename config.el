@@ -120,3 +120,175 @@
 (setq verilog-coverage "vlogan")
 (setq verilog-simulator "verdi")
 (setq verilog-compiler "vlogan" )
+;;插入
+(define-skeleton insert-always-clk-rst
+  "Inserts three comment lines, making a display comment."
+  ()
+  (interactive)
+  (insert "always @(posedge clk or negedge rst_n) begin
+      if(!rst_n)
+      else
+   end
+  "))
+
+  ;syn rst
+  (defun insert-always-clk ()
+	(interactive)
+  (insert "always @(posedge clk) begin
+      if( )
+      else
+   end
+  "))
+
+  (defun insert-xilinx-ram ()
+	(interactive)
+  (insert "
+     ram_3x1024 ram_3x1024
+     (
+		// Outputs
+		.doutb			  ( ram_rdata ),
+		// Inputs
+		.clka			  ( clk       ),
+		.wea			  ( ram_wen   ),
+		.addra			  ( ram_waddr ),
+		.dina			  ( ram_wdata ),
+		.clkb			  ( clk	      ),
+		.enb			  ( ram_ren   ),
+		.addrb			  ( ram_raddr ));
+
+   always @(posedge clk) begin
+      if(~rst_n)
+        ram_wen <= 1'b0;
+      else
+        ram_wen <= 1'b1;
+   end
+
+   always @(posedge clk) begin
+      if(~rst_n)
+        ram_waddr <= 0;
+      else if(ram_wen)
+        ram_waddr <= ram_waddr+1'b1;
+   end
+
+   always @(posedge clk) begin
+      if(~rst_n)
+        ram_wdata <= 0;
+      else
+        ram_wdata <= {FPGA_RMII_TXEN,FPGA_RMII_TXD0,FPGA_RMII_TXD1};
+   end
+	  "))
+
+  ;testbench
+  (defun insert-testbench ()
+	(interactive)
+  (insert"`timescale 1ns / 100ps
+
+module tb_ddc_top;
+   parameter ClockPeriod = 10;
+   parameter FRAM_LEN = 16'd16384;
+   parameter FS_NUM = 8'd4;
+   /*AUTOWIRE*/
+   /*AUTOREGINPUT*/
+   reg [07:00]          fs_cnt;
+   reg [15:00]          cnt;
+   reg [15:00]          mem_din_i[0:FRAM_LEN-1];
+   reg [15:00]	        mem_din_q[0:FRAM_LEN-1];
+   ddc_top ddc_top
+     (/*AUTOINST*/);
+
+   initial begin
+      clk = 0;
+      rst_n = 0;
+   end
+
+   always #(ClockPeriod/2) clk = ~clk;
+   initial begin
+      rst_n = 0;
+      @(posedge clk);
+      @(posedge clk);
+      rst_n = 1;
+   end
+
+   always @(posedge clk) begin
+      if(~rst_n)
+        fs_cnt <= 0;
+      else if(fs_cnt==FS_NUM-1)
+        fs_cnt <= 0;
+      else
+        fs_cnt <= fs_cnt+1'b1;
+   end
+
+   always @(posedge clk) begin
+      if(~rst_n)
+        cnt <= 0;
+      if(fs_cnt==FS_NUM-1) begin
+         if(cnt==FRAM_LEN-1)
+           cnt <= 0;
+         else
+           cnt <= cnt+1'b1;
+      end
+   end
+
+   initial begin
+      $readmemh(" ",mem_din_i);
+      $readmemh(" ",mem_din_q);
+   end
+
+   always @(posedge clk) begin
+      if(~rst_n)
+        din_vld <= 1'b0;
+      else if(fs_cnt==FS_NUM-1)
+        din_vld <= 1'b1;
+      else
+        din_vld <= 1'b0;
+   end
+
+   assign din_i = mem_din_i[cnt];
+   assign din_q = mem_din_q[cnt];
+
+endmodule
+	"))
+
+(defun insert-inst-my ()
+	(interactive)
+  (insert "
+modu_name modu_name
+(/*autoinst*/);
+	  "))
+
+  (defun insert-fsm ()
+  (interactive)
+  (insert "
+parameter IDLE = 4'd1,
+RRAM = 4'd2,
+WRAM = 4'd4,
+aaa = 4'd8;
+
+assign is_idle = state[0];
+assign is_idle = state[0];
+assign is_idle = state[0];
+assign is_idle = state[0];
+
+always @(posedge clk or negedge rst_n) begin
+      if(!rst_n)
+         state <= IDLE;
+      else
+         state <= nx_state;
+   end
+
+always @ * begin
+
+end
+  "))
+
+;; (map! :g "C-c C-1" #'verilog-sk-module)
+(defun wb-verilog-mode ()
+  (local-set-key (kbd "C-1      ") 'insert-always-clk-rst)
+  (local-set-key (kbd "C-2      ") 'insert-always-clk)
+  (local-set-key (kbd "C-c C-f") 'insert-fsm)
+  (local-set-key (kbd "C-c C-i") 'insert-inst-my )
+  (local-set-key (kbd "C-c C-t") 'insert-testbench )
+  (local-set-key (kbd "C-c C-m") 'verilog-sk-module)
+  (local-set-key (kbd "[f9]     ") 'verilog-insert-date))
+
+(add-hook 'verilog-mode-hook 'wb-verilog-mode)
