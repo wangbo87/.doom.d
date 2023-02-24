@@ -88,13 +88,18 @@
 ;;(map! :g "<S-down-mouse-1>" #'ignore)
 ;;(map! :g "<S-mouse-1>" #'mouse-set-point)
 ;;(put 'mouse-set-point 'CUA 'move)
+;;
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;color-rg;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;(modify-coding-system-alist 'process "rg" '(utf-8 . chinese-gbk-dos))
 ;;(custom-set-variables '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case"))
 (map! :g "C-s" #'save-buffer)
-(global-set-key [f3] '+vertico/search-symbol-at-point)
+;; (global-set-key [f3] '+vertico/search-symbol-at-point)
 (require 'color-rg)
 (global-set-key [f2] 'color-rg-search-symbol-in-project)
+(require 'helm-swoop)
+(global-set-key (kbd "<f3>") 'helm-swoop)
+(global-set-key [f4] 'helm-multi-swoop-all)
 
 ;; If there is no symbol at the cursor, use the last used words instead.
 (setq helm-swoop-pre-input-function
