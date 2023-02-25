@@ -108,7 +108,7 @@
           (if (eq (length $pre-input) 0)
               helm-swoop-pattern ;; this variable keeps the last used words
             $pre-input))))
-
+;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;verilog;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 (require 'verilog-mode)
@@ -290,3 +290,13 @@ end
   (local-set-key (kbd "[f9]     ") 'verilog-insert-date))
 
 (add-hook 'verilog-mode-hook 'wb-verilog-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;corfu;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (advice-add #'company-mode :override '(lambda (x) (message "disabled company-mode")))
+;; ;;Enable auto completion and configure quitting
+;;   (setq corfu-auto t
+;;         corfu-quit-no-match 'separator) ;; or t
+
+(when (modulep! :completion company)
+  (setq +lsp-company-backends '(company-capf :with company-yasnippet)))
+
