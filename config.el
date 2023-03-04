@@ -287,7 +287,7 @@ end
   (local-set-key (kbd "C-c C-i") 'insert-inst-my )
   (local-set-key (kbd "C-c C-t") 'insert-testbench )
   (local-set-key (kbd "C-c C-m") 'verilog-sk-module)
-  (local-set-key (kbd "[f9]     ") 'verilog-insert-date))
+  (local-set-key (kbd "<f9>") 'verilog-insert-date))
 
 (add-hook 'verilog-mode-hook 'wb-verilog-mode)
 
